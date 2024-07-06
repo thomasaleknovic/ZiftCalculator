@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const lojaResultYearly = lojaResultMonthly * 14;
 
 
-        let corporativoResultMonthly = hasRegionalBrand ? (annualBilling / 5000 * 0.10) : (annualBilling / 5000);
+        let corporativoResultMonthly = !hasRegionalBrand ? (annualBilling / 5000 * 0.1) : (annualBilling / 5000);
         const corporativoResultYearly = corporativoResultMonthly * 14;
 
         let ecommerceResultMonthly = storeSegment === "Restaurante"
@@ -29,28 +29,37 @@ document.addEventListener('DOMContentLoaded', function () {
         const totalMonthly = lojaResultMonthly + corporativoResultMonthly + ecommerceResultMonthly;
         const totalYearly = lojaResultYearly + corporativoResultYearly + ecommerceResultYearly;
 
-        printOnScreenResult(`Loja - Mensal: ${lojaResultMonthly.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
-        printOnScreenResult(`Loja - Anual: ${lojaResultYearly.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        const finalLojaResultMonthly = lojaResultMonthly.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+        const finalLojaResultYearly = lojaResultYearly.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+        const finalCorporativoResultMonthly = corporativoResultMonthly.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
-        printOnScreenResult(`Corporativo - Mensal: ${corporativoResultMonthly.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
-        printOnScreenResult(`Corporativo - Anual: ${corporativoResultYearly.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        const finalCorporativoResultYearly = corporativoResultYearly.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
-        printOnScreenResult(`E-commerce - Mensal: ${ecommerceResultMonthly.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
-        printOnScreenResult(`E-commerce - Anual: ${ecommerceResultYearly.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        const finalEcommerceResultMonthly = ecommerceResultMonthly.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
-        printOnScreenResult(`Total - Mensal: ${totalMonthly.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
-        printOnScreenResult(`Total - Anual: ${totalYearly.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`);
+        const finalEcommerceResultYearly = ecommerceResultYearly.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+
+        const finaltotalMonthly = totalMonthly.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+
+        const finalTotalYearly = totalYearly.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+
+        createResultModal(
+            finalLojaResultMonthly,
+            finalLojaResultYearly,
+            finalEcommerceResultMonthly,
+            finalEcommerceResultYearly,
+            finalCorporativoResultMonthly,
+            finalCorporativoResultYearly,
+            finaltotalMonthly,
+            finalTotalYearly
+        );
         
     }
 
 
-    // Função para imprimir o resultado na tela
-    function printOnScreenResult(result) {
-        console.log(result)
-        
-    }
+    
 
-    function createResultModal(lojaResultMonthly, lojaResultYearly, corporativoResultMonthly, corporativoResultYearly, ecommerceResultMonthly, ecommerceResultYearly, totalMonthly, totalYearly) {
+    function createResultModal(lojaResultMonthly, lojaResultYearly, ecommerceResultMonthly, ecommerceResultYearly, corporativoResultMonthly, corporativoResultYearly, totalMonthly, totalYearly) {
         const style = document.createElement('style');
         style.textContent = `
 
@@ -65,12 +74,12 @@ document.addEventListener('DOMContentLoaded', function () {
         right: 0;
         bottom: 0;
         left: 0;
-        z-index: 30;
+        z-index: 9999;
         }
         
         #modal-container {
         background-color: #f2f2f2;
-        width: 75%;
+        width: 50%;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -87,11 +96,24 @@ document.addEventListener('DOMContentLoaded', function () {
         
         #result-container {
         width: 500px;
-        
         }
 
-        #result-table {
+        .result-table td {
+        background: transparent !important;
+        border: 0;    
+        }
+
+        .Loja_container, .E-commerce_container, .Corporativo_container {
+        border-bottom: 1px solid #b72776;
+        }
+
+        #Loja_1, #Loja_2,#E-commerce_1, #E-commerce_2, #Corporativo_1, #Corporativo_2 {
+        font-weight: bold;
+        }
+
+        #table-header {
         
+        font-size: 12px;
         }
 
         #result-title {
@@ -135,6 +157,36 @@ document.addEventListener('DOMContentLoaded', function () {
         opacity: 0;
         border: 0;
         }
+
+        #result-button {
+        height: 40px !important;
+        width: 250px !important;
+        padding: 8px !important;
+        border-radius: 50px !important;
+        background-color: #303030 !important;
+        color: white !important;
+        border: none !important;
+        cursor: pointer !important;
+        margin: auto !important;
+        margin-top: 30px !important;
+        }
+
+        #exit-button {
+        border: none !important;
+        position: absolute !important;
+        top: 15px !important;
+        right: 15px !important;
+        color: #303030 !important;
+        font-size: 20px !important;
+        background-color: transparent !important;
+        }
+
+        #exit-button:hover{
+        color: #f2f2f2 !important;
+        background-color: #b72776 !important;
+        }
+
+        
         
         
         `
@@ -157,11 +209,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const button = document.createElement('a');
         button.innerHTML = 'Falar com Consultor'
-        button.className = 'submitFormButton'
         button.setAttribute('id', 'result-button')
 
-        const table = createTable();
-        // const total = createTableTotal()
+        const exitButton = document.createElement('button');
+        exitButton.innerHTML = 'X';
+        exitButton.setAttribute('id', 'exit-button')
+
+        exitButton.addEventListener('click', () => {
+            background.remove();
+        })
+
+        const table = createTable(lojaResultMonthly, lojaResultYearly, ecommerceResultMonthly, ecommerceResultYearly, corporativoResultMonthly, corporativoResultYearly, totalMonthly, totalYearly);
 
         document.body.appendChild(background);
         background.appendChild(modal);
@@ -169,12 +227,12 @@ document.addEventListener('DOMContentLoaded', function () {
         modal.appendChild(title);
         modal.appendChild(paragraph);
         modal.appendChild(button);
-        // modal.appendChild(total);
+        modal.appendChild(exitButton);
         
 
     }
 
-    function createTable() {
+    function createTable(lojaResultMonthly, lojaResultYearly, ecommerceResultMonthly, ecommerceResultYearly, corporativoResultMonthly, corporativoResultYearly, totalMonthly, totalYearly) {
 
         // Obtém uma referência ao elemento <div> onde você deseja inserir a tabela
         const div = document.createElement("div");
@@ -188,6 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Cria as células da tabela (4 linhas x 3 colunas)
         const headerRow = table.insertRow(); // Insere a linha do cabeçalho
         const headerCells = ["Canal de venda", "Mensal", "Anual"];
+        headerRow.setAttribute('id', 'table-header');
         headerCells.forEach((text) => {
             const cell = headerRow.insertCell();
             cell.className = text;
@@ -196,11 +255,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Dados das outras linhas
         const data = [
-            ["Loja", "R$ 210.000,00", "R$ 2.210.000,00"],
-            ["E-commerce", "R$ 210.000,00", "R$ 2.210.000,00"],
-            ["Corporativo", "R$ 210.000,00", "R$ 2.210.000,00"],
+            ["Loja", lojaResultMonthly, lojaResultYearly],
+            ["E-commerce", ecommerceResultMonthly, ecommerceResultYearly],
+            ["Corporativo", corporativoResultMonthly, corporativoResultYearly],
             ["","",""],
-            ["Total", "R$ 210.000,00", "R$ 2.210.000,00"],
+            ["Total", totalMonthly, totalYearly],
         ];
 
         // Preenche as células com os dados
@@ -221,45 +280,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return div;
 
     }
-
-
-    // function createTableTotal() {
-    //     const style = document.createElement('style');
-    //         style.textContent = `
-            
-    //         `
-    //         document.head.appendChild(style);
-    
-    //         // Cria o elemento <table>
-    //         const table = document.createElement("table");
-    //         table.className = 'total-table'
-    //         table.border = "1"; // Define a borda da tabela
-    
-    //         // Cria as células da tabela (4 linhas x 3 colunas)
-            
-    //         // Dados das outras linhas
-    //         const data = ["Total", "R$ 210.000,00", "R$ 2.210.000,00"];
-    
-    //         // Preenche as células com os dados
-            
-    //             const row = table.insertRow();
-    //             data.forEach((text) => {
-    //                 const cell = row.insertCell();
-    //                 cell.className = text;
-    //                 cell.appendChild(document.createTextNode(text));
-    //             });
-         
-    
-            
-    
-    //         return table;
-    
-    //     }
-    
-    
-
-
-    createResultModal();
 
     // Criação do contêiner principal
     const mainContainer = document.createElement('div');
@@ -367,6 +387,7 @@ document.addEventListener('DOMContentLoaded', function () {
         cursor: pointer !important;
         margin: auto !important;
         margin-top: 30px !important;
+        margin-bottom: 30px !important;
         }
 
         .storeSegment {
